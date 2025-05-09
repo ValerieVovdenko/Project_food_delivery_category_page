@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style_app.css" />
+
+    <title>Японська кухня | Foodly</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Gill Sans", sans-serif;
+      }
+
+      body {
+        background-color: #f7f7f7;
+        color: #1c1c1c;
+        line-height: 1.5;
+      }
+
+      /* Header styles */
+      header {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 10px 20px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 75px;
+      }
+
+      .header-button {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .login-button {
+        background-color: #00b14f;
+        color: white;
+        border: none;
+        border-radius: 24px;
+        padding: 8px 16px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      .login-button:hover {
+        background-color: #0c753c;
+      }
+
+      .language-select {
+        padding: 6px 12px;
+        border-radius: 24px;
+        border: 1px solid #ffffff;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .cart-button {
+        background: none;
+        border: none;
+        font-size: 25px;
+        cursor: pointer;
+        color: #333;
+      }
+
+      .cart-button:hover {
+        color: #0c753c;
+      }
+
+      /* Search bar styles */
+      .search-container {
+        background-color: #f7f7f7;
+        padding: 20px 0;
+        width: 100%;
+      }
+
+      .search-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 36px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .search-icon {
+        padding: 0 12px;
+        font-size: 18px;
+        color: #666;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 14px 10px;
+        border: none;
+        font-size: 16px;
+        background: transparent;
+        outline: none;
+      }
+
+      .filter-button {
+        background: none;
+        border: none;
+        padding: 0 12px;
+        font-size: 18px;
+        color: #666;
+        cursor: pointer;
+      }
+
+      .filter-button:hover {
+        color: #000;
+      }
+
+      /* Filter dropdown */
+      .filter-dropdown {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 300px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        padding: 20px;
+        z-index: 100;
+        display: none;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .filter-header h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1c1c1c;
+      }
+
+      .close-filter {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+      }
+
+      .close-filter:hover {
+        color: #00b14f;
+      }
+
+      .filter-section {
+        margin-bottom: 18px;
+      }
+
+      .filter-section h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .filter-options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .filter-checkbox {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #444;
+        cursor: pointer;
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 8px;
+      }
+
+      .filter-checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      .checkmark {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+
+      .filter-checkbox:hover input ~ .checkmark {
+        background-color: #e0e0e0;
+      }
+
+      .filter-checkbox input:checked ~ .checkmark {
+        background-color: #00b14f;
+        border-color: #00b14f;
+      }
+
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      .filter-checkbox input:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      .filter-checkbox .checkmark:after {
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+
+      .rating-slider {
+        margin-top: 5px;
+      }
+
+      .rating-value {
+        font-size: 16px;
+        color: #444;
+      }
+
+      .rating-range {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: #00b14f;
+      }
+
+      .filter-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+      }
+
+      .reset-filter {
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #444;
+      }
+
+      .apply-filter {
+        background-color: #00b14f;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      .apply-filter:hover {
+        background-color: #009a44;
+      }
+
+      .reset-filter:hover {
+        background-color: #e0e0e0;
+      }
+
+      .search-wrapper {
+        position: relative;
+      }
+      /* Breadcrumb */
+      .breadcrumb {
+        max-width: 1300px;
+        margin: 20px auto 0;
+        padding: 0 20px;
+        font-size: 16px;
+      }
+
+      .breadcrumb ul {
+        display: flex;
+        list-style: none;
+      }
+
+      .breadcrumb li {
+        margin-right: 8px;
+      }
+
+      .breadcrumb li:after {
+        content: ">";
+        margin-left: 8px;
+        color: #666;
+      }
+
+      .breadcrumb li:last-child:after {
+        content: "";
+      }
+
+      .breadcrumb a {
+        text-decoration: none;
+        color: #666;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .breadcrumb .current {
+        color: #1c1c1c;
+        font-weight: 500;
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1300px;
+        margin: 20px auto;
+        padding: 0 20px;
+        display: flex;
+        gap: 24px;
+      }
+
+      /* Content area */
+      .content-area {
+        flex-grow: 1;
+      }
+
+      .cuisine-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .restaurant-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .restaurant-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .restaurant-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .restaurant-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .restaurant-info {
+        padding: 15px;
+      }
+
+      .restaurant-info h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .restaurant-meta {
+        display: flex;
+        align-items: center;
+        color: #1f1e1e;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        gap: 12px;
+      }
+
+      .rating-block {
+        display: flex;
+        align-items: center;
+      }
+
+      .star-icon {
+        color: #ffd700;
+        margin-right: 4px;
+      }
+
+      .time-block,
+      .distance-block {
+        display: flex;
+        align-items: center;
+      }
+
+      .time-icon {
+        margin-right: 4px;
+      }
+
+      .promo-label {
+        display: flex;
+        align-items: center;
+        color: #00b14f;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .discount-icon {
+        margin-right: 4px;
+      }
+
+      .cuisine-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 10px;
+      }
+
+      .cuisine-tag {
+        background-color: #f0f0f0;
+        color: #666;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      #no-results-message {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        margin: 20px auto;
+        font-size: 16px;
+        color: #666;
+        max-width: 600px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .filter-dropdown {
+        animation: fadeIn 0.3s ease;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+      }
+
+      .pagination-button {
+        background-color: white;
+        border: 1px solid #ddd;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .pagination-button.active {
+        background-color: #00b14f;
+        color: white;
+        border-color: #00b14f;
+      }
+
+      .pagination-button.prev,
+      .pagination-button.next {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      /* Popular Dishes Section */
+      .popular-dishes {
+        max-width: 1300px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      .popular-dishes h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .dishes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .dish-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .dish-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .dish-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .dish-info {
+        padding: 15px;
+      }
+
+      .dish-info h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .dish-restaurant {
+        color: #666;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+
+      .dish-price {
+        font-weight: 500;
+        font-size: 17px;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: #00b14f;
+        color: #ffffff;
+        padding: 40px 0 20px;
+        width: 100%;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-columns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .footer-column {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .footer-column h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 17px;
+        color: #ffffff;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 7px;
+      }
+
+      .footer-links a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.2s ease, border-bottom 0.2s ease;
+        position: relative;
+        display: inline-block;
+      }
+
+      .footer-links a:hover {
+        color: #ceecdc;
+      }
+
+      .footer-links a:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: #ffffff;
+        transition: width 0.3s ease;
+      }
+
+      .footer-links a:hover:after {
+        width: 100%;
+      }
+
+      .app-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .app-button {
+        display: block;
+      }
+
+      .app-button img {
+        height: 40px;
+        border-radius: 8px;
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid #333333;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .social-icon:hover {
+        background-color: #ceecdc;
+      }
+
+      .social-icon span {
+        color: #333333;
+        font-size: 18px;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+      }
+
+      .instagram span {
+        font-style: italic;
+      }
+      /* Product Modal Styles */
+      .product-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-modal-content {
+        background-color: #fff;
+        margin: 2% auto;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        max-width: 900px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        color: #666;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .close-modal:hover {
+        color: #00b14f;
+      }
+
+      .product-modal-container {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        padding: 30px;
+      }
+
+      .product-modal-image {
+        flex: 0 0 45%;
+      }
+
+      .product-modal-image img {
+        width: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+        max-height: 350px;
+      }
+
+      .product-modal-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .product-modal-details h2 {
+        font-size: 28px;
+        margin-bottom: 5px;
+        color: #1c1c1c;
+      }
+
+      .product-modal-restaurant {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 15px;
+      }
+
+      .product-modal-meta {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .reviews-count {
+        color: #666;
+        font-size: 14px;
+        margin-left: 5px;
+      }
+
+      .product-modal-description {
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .product-modal-allergens {
+        margin-bottom: 20px;
+      }
+
+      .product-modal-allergens h4 {
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: #333;
+      }
+
+      .allergens-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .allergen-tag {
+        background-color: #f0f0f0;
+        color: #666;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 13px;
+      }
+
+      .product-modal-nutrition {
+        display: flex;
+        justify-content: flex-start;
+        gap: 25px;
+        margin-bottom: 25px;
+        background-color: #f7f7f7;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      .nutrition-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .nutrition-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .nutrition-label {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .product-modal-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .quantity-selector {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+
+      .quantity-btn {
+        width: 36px;
+        height: 36px;
+        background-color: #f7f7f7;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .quantity-btn:hover {
+        background-color: #e0e0e0;
+      }
+
+      .quantity-input {
+        width: 40px;
+        height: 36px;
+        border: none;
+        text-align: center;
+        font-size: 16px;
+        background-color: #fff;
+      }
+
+      .product-modal-price {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1c1c1c;
+        white-space: nowrap;
+      }
+
+      .add-to-cart-btn {
+        background-color: #00b14f;
+        color: white;
+        border: none;
+        border-radius: 24px;
+        padding: 10px 20px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+      }
+
+      .add-to-cart-btn:hover {
+        background-color: #009a44;
+      }
+
+      .dish-card {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-container">
+        <div class="logo">
+          <img src="logo.png" alt="Foodly Logo" />
+        </div>
+
+        <div class="header-button">
+          <button class="login-button">Увійти</button>
+
+          <select class="language-select">
+            <option value="ua">UA</option>
+            <option value="en">EN</option>
+            <option value="pl">ES</option>
+          </select>
+
+          <button class="cart-button">
+            <i class="fas fa-shopping-cart"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <ul>
+        <li><a href="#">Головна</a></li>
+        <li><a href="#">Кухні</a></li>
+        <li class="current">Японська кухня</li>
+      </ul>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-container">
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Пошук закладів або страв..."
+        />
+        <button class="filter-button">
+          <i class="fas fa-sliders-h"></i>
+        </button>
+
+        <div id="filterDropdown" class="filter-dropdown">
+          <div class="filter-header">
+            <h3>Фільтри</h3>
+            <button id="closeFilter" class="close-filter">×</button>
+          </div>
+          <div class="filter-section">
+            <h4>Час доставки</h4>
+            <div class="filter-options">
+              <label class="filter-checkbox">
+                <input type="checkbox" /> 20-30 хв
+                <span class="checkmark"></span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" /> 35-45 хв
+                <span class="checkmark"></span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" /> 45-55 хв
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h4>Рейтинг</h4>
+            <div class="rating-slider">
+              <div class="rating-value">
+                від <span id="ratingValue">4.0</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="5"
+                step="0.1"
+                value="4.0"
+                id="ratingSlider"
+              />
+              <div class="rating-range">
+                <span>1.0</span>
+                <span>5.0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h4>Відстань</h4>
+            <div class="filter-options">
+              <label class="filter-checkbox">
+                <input type="checkbox" /> До 2 км
+                <span class="checkmark"></span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" /> До 3 км
+                <span class="checkmark"></span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" /> До 4 км
+                <span class="checkmark"></span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" /> Понад 4 км
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h4>Пропозиції</h4>
+            <div class="filter-options">
+              <label class="filter-checkbox">
+                <input type="checkbox" /> Знижки
+                <span class="checkmark"></span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" /> Безкоштовна доставка
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button class="reset-filter">Скинути</button>
+            <button class="apply-filter">Застосувати</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+      <!-- Content Area -->
+      <div class="content-area">
+        <div class="restaurant-grid">
+          <div class="restaurant-card">
+            <img src="SheXian.png" alt="SheXian Snacks" />
+            <div class="restaurant-info">
+              <h3>SheXian Snacks</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">4.8</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>20-30 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>2.1 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span class="discount-icon">🏷️</span>
+                <span>10% знижка на вибрані страви</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Суші</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="restaurant-card">
+            <img src="kokuro.png" alt="Kokuro Ramen" />
+            <div class="restaurant-info">
+              <h3>Kokuro Ramen</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">5</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>35-45 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>3.2 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span>&nbsp;</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Рамен</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="restaurant-card">
+            <img src="onigiri.png" alt="Mr.Onigiri" />
+            <div class="restaurant-info">
+              <h3>Mr.Onigiri</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">4.5</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>20-30 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>2.1 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span class="discount-icon">🏷️</span>
+                <span>Безкоштовна доставка</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Домбурі</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="restaurant-card">
+            <img src="kobe.png" alt="Kobe Sushi Bar" />
+            <div class="restaurant-info">
+              <h3>Kobe Sushi Bar</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">4.5</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>20-30 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>1.6 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span>&nbsp;</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Темпура</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="restaurant-card">
+            <img src="keisuke.png" alt="Ramen Keisuke" />
+            <div class="restaurant-info">
+              <h3>Ramen Keisuke</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">4.9</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>45-55 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>3.3 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span>&nbsp;</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Рамен</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="restaurant-card">
+            <img src="hokkaido.png" alt="Hokkaido-ya" />
+            <div class="restaurant-info">
+              <h3>Hokkaido-ya</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">4.9</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>20-30 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>1.8 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span>&nbsp;</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Суші</span>
+              </div>
+            </div>
+          </div>
+          <div class="restaurant-card">
+            <img src="yoshinoya.png" alt="Yooshinoya" />
+            <div class="restaurant-info">
+              <h3>Yooshinoya</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">5</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>45-55 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>4.1 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span class="discount-icon">🏷️</span>
+                <span>15% знижка на вибрані страви</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Суші</span>
+              </div>
+            </div>
+          </div>
+          <div class="restaurant-card">
+            <img src="ontama.png" alt="Ontama Don" />
+            <div class="restaurant-info">
+              <h3>Ontama Don</h3>
+              <div class="restaurant-meta">
+                <div class="rating-block">
+                  <span class="star-icon">★</span>
+                  <span class="rating-value">4.7</span>
+                </div>
+                <div class="time-block">
+                  <span class="time-icon">⏱</span>
+                  <span>35-45 хв</span>
+                </div>
+                <div class="distance-block">
+                  <span>2.6 км</span>
+                </div>
+              </div>
+              <div class="promo-label">
+                <span class="discount-icon">🏷️</span>
+                <span>20% знижка на вибрані страви</span>
+              </div>
+              <div class="cuisine-tags">
+                <span class="cuisine-tag">Японська</span>
+                <span class="cuisine-tag">Домбурі</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="pagination-button prev">‹</div>
+          <div class="pagination-button active">1</div>
+          <div class="pagination-button">2</div>
+          <div class="pagination-button">3</div>
+          <div class="pagination-button">4</div>
+          <div class="pagination-button">5</div>
+          <div class="pagination-button next">›</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular Dishes Section -->
+    <section class="popular-dishes">
+      <h2>Популярні страви</h2>
+      <div class="dishes-grid">
+        <div class="dish-card">
+          <img src="ramen.png" alt="Ramen soup with beef" />
+          <div class="dish-info">
+            <h3>Суп рамен з яловичиною</h3>
+            <div class="dish-restaurant">Hokkaido-ya</div>
+            <div class="dish-price">225,00 ₴</div>
+          </div>
+        </div>
+        <div class="dish-card">
+          <img src="12.jpg" alt="Bowl with shrimp" />
+          <div class="dish-info">
+            <h3>Боул з креветками</h3>
+            <div class="dish-restaurant">Ramen Keisuke</div>
+            <div class="dish-price">270,00 ₴</div>
+          </div>
+        </div>
+        <div class="dish-card">
+          <img src="tempura.jpg" alt="Tempura roll with eel" />
+          <div class="dish-info">
+            <h3>Темпура рол з вугрем</h3>
+            <div class="dish-restaurant">Kobe Sushi Bar</div>
+            <div class="dish-price">190,00 ₴</div>
+          </div>
+        </div>
+        <div class="dish-card">
+          <img src="miso.png" alt="Miso soup with shrimp" />
+          <div class="dish-info">
+            <h3>Місо суп з креветкою</h3>
+            <div class="dish-restaurant">Fukudon</div>
+            <div class="dish-price">230,00 ₴</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-columns">
+          <div class="footer-column">
+            <h3>Приєднуйся до нас</h3>
+            <ul class="footer-links">
+              <li><a href="#">Про нас</a></li>
+              <li><a href="#">Вакансії</a></li>
+              <li><a href="#">Foodly для Партнерів</a></li>
+              <li><a href="#">Стати кур'єром</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Корисні посилання</h3>
+            <ul class="footer-links">
+              <li><a href="#">Зв'язатися з нами</a></li>
+              <li><a href="#">Часті запитання</a></li>
+              <li><a href="#">Блог</a></li>
+              <li><a href="#">Безпека</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Підтримка</h3>
+            <ul class="footer-links">
+              <li><a href="#">Довідковий центр</a></li>
+              <li><a href="#">Допомога</a></li>
+              <li><a href="#">Питання та відповіді</a></li>
+              <li><a href="#">Політика конфіденційності</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <div class="app-buttons">
+              <a href="#" class="app-button">
+                <img src="logo-appstore.svg" alt="Download on the App Store" />
+              </a>
+              <a href="#" class="app-button">
+                <img src="logo-playstore.svg" alt="Get it on Google Play" />
+              </a>
+              <span>&nbsp;</span>
+              <div class="social-icons">
+                <a href="#" class="social-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect
+                      x="2"
+                      y="2"
+                      width="20"
+                      height="20"
+                      rx="5"
+                      ry="5"
+                    ></rect>
+                    <path
+                      d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                    ></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                <a href="#" class="social-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="product-modal">
+      <div class="product-modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="product-modal-container">
+          <div class="product-modal-image">
+            <img src="12.jpg" alt="Боул з креветками" id="modalProductImage" />
+          </div>
+          <div class="product-modal-details">
+            <h2 id="modalProductName">Боул з креветками</h2>
+            <div class="product-modal-restaurant" id="modalProductRestaurant">
+              Ramen Keisuke
+            </div>
+            <div class="product-modal-meta">
+              <div class="rating-block">
+                <span class="star-icon">★</span>
+                <span class="rating-value">4.9</span>
+                <span class="reviews-count">(124 відгуки)</span>
+              </div>
+              <div class="time-block">
+                <span class="time-icon">⏱</span>
+                <span>20-30 хв</span>
+              </div>
+            </div>
+            <div class="product-modal-description">
+              Cвіжі тигрові креветки, відварний рис, авокадо, огірок, соус
+              спайсі, чука, кунжут, норі та соєвий соус.
+            </div>
+            <div class="product-modal-allergens">
+              <h4>Алергени:</h4>
+              <div class="allergens-tags">
+                <span class="allergen-tag">Морепродукти</span>
+                <span class="allergen-tag">Глютен</span>
+                <span class="allergen-tag">Кунжут</span>
+              </div>
+            </div>
+            <div class="product-modal-nutrition">
+              <div class="nutrition-item">
+                <span class="nutrition-value">380</span>
+                <span class="nutrition-label">ккал</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-value">12</span>
+                <span class="nutrition-label">білки</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-value">45</span>
+                <span class="nutrition-label">вугл.</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-value">15</span>
+                <span class="nutrition-label">жири</span>
+              </div>
+            </div>
+            <div class="product-modal-actions">
+              <div class="quantity-selector">
+                <button class="quantity-btn minus-btn">-</button>
+                <input type="text" class="quantity-input" value="1" readonly />
+                <button class="quantity-btn plus-btn">+</button>
+              </div>
+              <div class="product-modal-price">
+                <span id="modalProductPrice">270,00 ₴</span>
+              </div>
+              <button class="add-to-cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                Додати у кошик
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const filterButton = document.querySelector(".filter-button");
+      const filterDropdown = document.getElementById("filterDropdown");
+      const closeFilter = document.getElementById("closeFilter");
+      const ratingSlider = document.getElementById("ratingSlider");
+      const ratingValue = document.getElementById("ratingValue");
+      const resetButton = document.querySelector(".reset-filter");
+      const applyButton = document.querySelector(".apply-filter");
+      const restaurantCards = document.querySelectorAll(".restaurant-card");
+
+      const initialRestaurants = Array.from(restaurantCards).map((card) => {
+        return {
+          element: card,
+          name:
+            card.querySelector("h3").textContent.trim() || "Невідомий ресторан",
+          rating:
+            parseFloat(card.querySelector(".rating-value").textContent) || 0,
+          time:
+            card.querySelector(".time-block span:last-child").textContent || "",
+          distance:
+            parseFloat(
+              card.querySelector(".distance-block span").textContent
+            ) || 0,
+          promo:
+            card.querySelector(".promo-label span:last-child")?.textContent ||
+            "",
+          cuisines:
+            Array.from(card.querySelectorAll(".cuisine-tag")).map((tag) =>
+              tag.textContent.trim()
+            ) || [],
+        };
+      });
+
+      console.log("Initial restaurants data:", initialRestaurants);
+
+      filterButton.addEventListener("click", function (e) {
+        e.stopPropagation();
+        filterDropdown.style.display =
+          filterDropdown.style.display === "block" ? "none" : "block";
+      });
+
+      closeFilter.addEventListener("click", function () {
+        filterDropdown.style.display = "none";
+      });
+
+      if (ratingSlider) {
+        ratingSlider.addEventListener("input", function () {
+          ratingValue.textContent = this.value;
+        });
+      }
+
+      resetButton.addEventListener("click", function () {
+        const checkboxes = filterDropdown.querySelectorAll(
+          'input[type="checkbox"]'
+        );
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+
+        if (ratingSlider) {
+          ratingSlider.value = 4.0;
+          ratingValue.textContent = "4.0";
+        }
+
+        initialRestaurants.forEach((restaurant) => {
+          restaurant.element.style.display = "block";
+        });
+
+        const noResultsMsg = document.getElementById("no-results-message");
+        if (noResultsMsg) {
+          noResultsMsg.style.display = "none";
+        }
+      });
+
+      function filterRestaurants() {
+        const minRating = ratingSlider ? parseFloat(ratingSlider.value) : 0;
+
+        const selectedTimes = [];
+        const timeCheckboxes = filterDropdown.querySelectorAll(
+          '.filter-section:nth-child(2) input[type="checkbox"]:checked'
+        );
+
+        timeCheckboxes.forEach((checkbox) => {
+          let labelText = checkbox.parentElement.textContent
+            .trim()
+            .replace(/[✓√☑]/g, "")
+            .trim();
+          selectedTimes.push(labelText);
+          console.log("Added time:", labelText);
+        });
+
+        const selectedDistances = [];
+        const distanceCheckboxes = filterDropdown.querySelectorAll(
+          '.filter-section:nth-child(4) input[type="checkbox"]:checked'
+        );
+
+        distanceCheckboxes.forEach((checkbox) => {
+          let labelText = checkbox.parentElement.textContent
+            .trim()
+            .replace(/[✓√☑]/g, "")
+            .trim();
+          selectedDistances.push(labelText);
+          console.log("Added distance:", labelText);
+        });
+
+        const selectedOffers = [];
+        const offerCheckboxes = filterDropdown.querySelectorAll(
+          '.filter-section:nth-child(5) input[type="checkbox"]:checked'
+        );
+
+        offerCheckboxes.forEach((checkbox) => {
+          let labelText = checkbox.parentElement.textContent
+            .trim()
+            .replace(/[✓√☑]/g, "")
+            .trim();
+          selectedOffers.push(labelText);
+          console.log("Added offer:", labelText);
+        });
+
+        console.log("Filtering with:");
+        console.log("- Min rating:", minRating);
+        console.log("- Times:", selectedTimes);
+        console.log("- Distances:", selectedDistances);
+        console.log("- Offers:", selectedOffers);
+
+        // Фільтрування ресторанів
+        let visibleCount = 0;
+        initialRestaurants.forEach((restaurant) => {
+          let shouldShow = true;
+
+          console.log("\nChecking restaurant:", restaurant.name);
+          console.log("- Rating:", restaurant.rating);
+          console.log("- Cuisines:", restaurant.cuisines);
+          console.log("- Time:", restaurant.time);
+          console.log("- Distance:", restaurant.distance);
+          console.log("- Promo:", restaurant.promo);
+
+          // 1. Фільтр за рейтингом
+          if (minRating > 0) {
+            if (restaurant.rating < minRating) {
+              console.log(
+                "- Failed rating filter:",
+                restaurant.rating,
+                "<",
+                minRating
+              );
+              shouldShow = false;
+            } else {
+              console.log(
+                "- Passed rating filter:",
+                restaurant.rating,
+                ">=",
+                minRating
+              );
+            }
+          }
+
+          // 2. Фільтр за часом доставки
+          if (shouldShow && selectedTimes.length > 0) {
+            const restaurantTimeLower = restaurant.time.toLowerCase();
+            let timeMatch = false;
+
+            for (const selectedTime of selectedTimes) {
+              const timeLower = selectedTime.toLowerCase();
+              if (restaurantTimeLower.includes(timeLower)) {
+                timeMatch = true;
+                console.log(
+                  `- Time match found: '${restaurantTimeLower}' contains '${timeLower}'`
+                );
+                break;
+              }
+            }
+
+            if (!timeMatch) {
+              console.log("- Failed time filter: no matching time");
+              shouldShow = false;
+            } else {
+              console.log("- Passed time filter");
+            }
+          }
+
+          // 3. Фільтр за відстанню
+          if (shouldShow && selectedDistances.length > 0) {
+            let distanceMatch = false;
+            const restaurantDistance = restaurant.distance;
+
+            for (const selectedDistance of selectedDistances) {
+              const distanceText = selectedDistance.replace(/[^\d.,\-]/g, "");
+
+              if (selectedDistance.toLowerCase().includes("до")) {
+                const maxDistance = parseFloat(distanceText.replace(",", "."));
+
+                if (!isNaN(maxDistance) && restaurantDistance <= maxDistance) {
+                  distanceMatch = true;
+                  console.log(
+                    `- Distance match: ${restaurantDistance} км <= ${maxDistance} км (максимум)`
+                  );
+                  break;
+                }
+              } else if (distanceText.includes("-")) {
+                const rangeParts = distanceText.split("-");
+                if (rangeParts.length === 2) {
+                  const minRange = parseFloat(rangeParts[0].replace(",", "."));
+                  const maxRange = parseFloat(rangeParts[1].replace(",", "."));
+
+                  if (
+                    !isNaN(minRange) &&
+                    !isNaN(maxRange) &&
+                    restaurantDistance >= minRange &&
+                    restaurantDistance <= maxRange
+                  ) {
+                    distanceMatch = true;
+                    console.log(
+                      `- Distance match: ${minRange} км <= ${restaurantDistance} км <= ${maxRange} км (діапазон)`
+                    );
+                    break;
+                  }
+                }
+              } else {
+                const exactDistance = parseFloat(
+                  distanceText.replace(",", ".")
+                );
+
+                if (
+                  !isNaN(exactDistance) &&
+                  Math.abs(restaurantDistance - exactDistance) <= 0.2
+                ) {
+                  distanceMatch = true;
+                  console.log(
+                    `- Distance match: ${restaurantDistance} км ≈ ${exactDistance} км (точне значення)`
+                  );
+                  break;
+                }
+              }
+            }
+
+            if (!distanceMatch) {
+              console.log("- Failed distance filter: no matching distance");
+              shouldShow = false;
+            } else {
+              console.log("- Passed distance filter");
+            }
+          }
+
+          // 4. Фільтр за промоакціями
+          if (shouldShow && selectedOffers.length > 0) {
+            const restaurantPromoLower = restaurant.promo.toLowerCase();
+            let offerMatch = false;
+
+            for (const selectedOffer of selectedOffers) {
+              const offerLower = selectedOffer.toLowerCase().trim();
+
+              if (
+                offerLower.includes("безкоштовна доставка") &&
+                restaurantPromoLower.includes("безкоштовна доставка")
+              ) {
+                offerMatch = true;
+                console.log(`- Offer match found: Free delivery`);
+                break;
+              } else if (
+                (offerLower.includes("знижка") ||
+                  offerLower.includes("знижки")) &&
+                (restaurantPromoLower.includes("знижка") ||
+                  restaurantPromoLower.includes("знижки") ||
+                  restaurantPromoLower.includes("%") ||
+                  /\d+\s*%/.test(restaurantPromoLower))
+              ) {
+                offerMatch = true;
+                console.log(
+                  `- Offer match found: Discount in '${restaurantPromoLower}'`
+                );
+                break;
+              } else if (restaurantPromoLower.includes(offerLower)) {
+                offerMatch = true;
+                console.log(
+                  `- Offer match found: '${restaurantPromoLower}' contains '${offerLower}'`
+                );
+                break;
+              }
+            }
+
+            if (!offerMatch) {
+              console.log("- Failed offer filter: no matching offer");
+              shouldShow = false;
+            } else {
+              console.log("- Passed offer filter");
+            }
+          }
+
+          restaurant.element.style.display = shouldShow ? "block" : "none";
+          if (shouldShow) visibleCount++;
+
+          console.log("=> Final result - Visible:", shouldShow);
+        });
+
+        console.log("Total visible restaurants:", visibleCount);
+
+        filterDropdown.style.display = "none";
+
+        updateGridLayout();
+
+        return visibleCount;
+      }
+
+      function updateGridLayout() {
+        const restaurantGrid = document.querySelector(".restaurant-grid");
+        const visibleCards = Array.from(
+          restaurantGrid.querySelectorAll(".restaurant-card")
+        ).filter((card) => card.style.display !== "none");
+
+        console.log("Visible cards after filtering:", visibleCards.length);
+
+        if (visibleCards.length === 0) {
+          let noResultsMsg = document.getElementById("no-results-message");
+          if (!noResultsMsg) {
+            noResultsMsg = document.createElement("div");
+            noResultsMsg.id = "no-results-message";
+            noResultsMsg.style.textAlign = "center";
+            noResultsMsg.style.padding = "50px 0";
+            noResultsMsg.style.fontSize = "18px";
+            noResultsMsg.style.color = "#666";
+            noResultsMsg.textContent =
+              "На жаль, заклади не знайдено. Спробуйте змінити параметри фільтрації.";
+            restaurantGrid.parentNode.insertBefore(
+              noResultsMsg,
+              restaurantGrid.nextSibling
+            );
+          } else {
+            noResultsMsg.style.display = "block";
+          }
+        } else {
+          const noResultsMsg = document.getElementById("no-results-message");
+          if (noResultsMsg) {
+            noResultsMsg.style.display = "none";
+          }
+        }
+      }
+
+      applyButton.addEventListener("click", filterRestaurants);
+
+      document.addEventListener("click", function (e) {
+        if (!filterDropdown.contains(e.target) && e.target !== filterButton) {
+          filterDropdown.style.display = "none";
+        }
+      });
+
+      const productModal = document.getElementById("productModal");
+
+      const shrimpBowlCard = document.querySelector(".dish-card:nth-child(2)");
+
+      const closeModal = document.querySelector(".close-modal");
+
+      shrimpBowlCard.addEventListener("click", function () {
+        productModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      });
+
+      closeModal.addEventListener("click", function () {
+        productModal.style.display = "none";
+        document.body.style.overflow = "auto";
+      });
+
+      window.addEventListener("click", function (event) {
+        if (event.target == productModal) {
+          productModal.style.display = "none";
+          document.body.style.overflow = "auto";
+        }
+      });
+
+      const minusBtn = document.querySelector(".minus-btn");
+      const plusBtn = document.querySelector(".plus-btn");
+      const quantityInput = document.querySelector(".quantity-input");
+      const productPrice = document.getElementById("modalProductPrice");
+      const originalPrice = 270;
+
+      minusBtn.addEventListener("click", function () {
+        let currentValue = parseInt(quantityInput.value);
+        if (currentValue > 1) {
+          quantityInput.value = currentValue - 1;
+          updatePrice();
+        }
+      });
+
+      plusBtn.addEventListener("click", function () {
+        let currentValue = parseInt(quantityInput.value);
+        quantityInput.value = currentValue + 1;
+        updatePrice();
+      });
+
+      function updatePrice() {
+        let quantity = parseInt(quantityInput.value);
+        let totalPrice = originalPrice * quantity;
+        productPrice.textContent =
+          totalPrice.toFixed(2).replace(".", ",") + " ₴";
+      }
+    </script>
+  </body>
+</html>
